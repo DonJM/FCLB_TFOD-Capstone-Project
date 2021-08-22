@@ -23,24 +23,24 @@ class Setup_Path:
     def get_main_paths(self):
         paths = {
             "WORKSPACE_PATH": "workspace",
-            "TENSORFLOW_API_MODEL_PATH": "TFOD_Path",
+            "TENSORFLOW_API_MODEL_PATH": "TFOD_API",
             "PROTOBUF_PATH": "protobuf",
             "ANOTATIONS_PATH": os.path.join("workspace","anotations"),
             "IMAGES_PATH": os.path.join("workspace","images"),
             "DATASETS_PATH": os.path.join("workspace","datasets"),
             "MODELS_PATH": os.path.join("workspace","models"),
             "PRETRAINED_MODEL_PATH": os.path.join("workspace","pretrained_model"),
-            "CHECKPOINT_PATH": os.path.join("workspace", "models", self.custom_name),
-            "OUTPUT_PATH": os.path.join("workspace", "anotations", "tjsexport"),
+            "OUTPUT_PATH": os.path.join("workspace", "anotations", "export"),
             "TFJS_PATH": os.path.join("workspace", "anotations", "tjsexport"),
             "DEPLOYMENT_PATH":os.path.join("workspace"),#for opencv, testing for computer vision
-            "DETECTION_IMAGES_PATH":os.path.join("workspace", "images", "detection_images"),
+            "CHECKPOINT_PATH": os.path.join("workspace", self.custom_name),
+            
         }
 
         return paths
 
     def set_main_paths(self):
-        for path in self.get_main_paths.values():
+        for path in self.get_main_paths().values():
             if not os.path.exists(path):
                 os.makedirs(path)
 
@@ -54,8 +54,8 @@ class Setup_Path:
 
     def set_image_paths(self):
         for path in self.get_image_paths().values():
-            for label in self.get_image_paths().values()[path]:
-                if os.path.exists(label):
+            for label in path:
+                if not os.path.exists(label):
                     os.makedirs(label)
 
     def getFiles(self):
@@ -65,3 +65,11 @@ class Setup_Path:
             'LABEL_MAP':os.path.join(self.get_paths()['ANOTATIONS_PATH'], self.map_name),
         }
         return files
+
+    def get_dataset_paths(self):
+        path = {
+            'ORIGINAL_IMAGES_PATH': os.path.join(self.get_main_paths()['DATASETS_PATH'], self.IMAGES_PATHS[0]),
+            'PREPROCESSED_IMAGES_PATH': os.path.join(self.get_main_paths()['DATASETS_PATH'], self.IMAGES_PATHS[1]),
+            'LABELED_IMAGES_PATH': os.path.join(self.get_main_paths()['DATASETS_PATH'], self.IMAGES_PATHS[2]),
+        }
+        return path
